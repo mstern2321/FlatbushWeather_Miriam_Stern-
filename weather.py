@@ -126,7 +126,7 @@ def largest_temperature_range():
     plt.title("Monthly temperature range")
     plt.grid(True)
     plt.xlabel("Month")
-    plt.ylabel("temperature range")
+    plt.ylabel("Temperature range")
     plt.xticks(ticks=x, labels=months_extremes)
     plt.show()
 
