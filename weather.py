@@ -1,14 +1,27 @@
+"""
+This program reads weather data from two CSV files.
+It uses this data to create charts and graphs using matplotlib.
+It also analyzes the max, min, and average for each graph.
+"""
+
 import matplotlib.pyplot as plt
 import os
 
+# Creates a relative path for the csv files
 filepath_1 = os.path.join("data", "weather_data_flatbush.csv")
 filepath_2 = os.path.join("data", "flatbush_extremes.csv")
 
+# Lists for the average weather data
 months = []
 avg_high = []
 avg_low = []
 precipitation = []
+
 def open_filepath_1():
+    """
+    Reads the weather_data_flatbush.csv file and creates lists with:
+    month names, average high temperatures, average low temperatures, and average precipitation
+    """
     with open(filepath_1, "r") as f:
         lines = f.readlines()[1:]
         for line in lines:
@@ -18,11 +31,16 @@ def open_filepath_1():
             avg_low.append(int(parts[2]))
             precipitation.append(float(parts[3]))
 
+# Lists for the extreme weather data
 months_extremes = []
 record_high = []
 record_low = []
 average_snow = []
 def open_filepath_2():
+    """
+    Reads the flatbush_extremes.csv file and creates lists with:
+    month names, record high temperatures, record low temperatures, and average snowfall
+    """
     with open(filepath_2, "r") as f:
         lines = f.readlines()[1:]
         for line in lines:
@@ -32,10 +50,18 @@ def open_filepath_2():
             record_low.append(int(parts[2]))
             average_snow.append(float(parts[3]))
 
+# Color palette for the graphs
 colors = ("#d9ed92", "#b5e48c", "#99d98c", "#76c893", "#52b69a", "#34a0a4", "#168aad", "#1a759f", "#1e6091", "#184e77", "#013a63", "#012a4a")
 
 #  Graph #1
 def line_chart():
+    """
+    Creates a line chart that compares the average high and low temperatures per month.
+    It also prints:
+    A. The month with the highest average temperature
+    B. The month with the lowest average temperature
+    C. The average monthly temperature
+    """
     x = range(len(months))
     plt.plot(x, avg_high, marker = "o", color = colors[0], label = "Average high")
     plt.plot(x, avg_low, marker = "o", color = colors[1], label = "Average low")
@@ -55,29 +81,16 @@ def line_chart():
     print(f"The month with the highest average temperature is {average_high_month}.")
     print(f"The month with the lowest average temperature is {average_low_month}.")
     print(f"The average monthly temperature is {average_of_avgs:.2f}.\n")
-"""
-def bar_chart():
-    left_edge = months
-    height = avg_high
-    bar_width = .5
-    plt.title("Average high temperatures")
-    plt.grid(True)
-    plt.bar(left_edge, height, bar_width, color = colors)
-    plt.xticks(ticks=range(len(months)), labels=months)
-    plt.xlabel("Month")
-    plt.ylabel("Temperature")
-    plt.show()
-
-def pie_chart():
-    slices = precipitation
-    pie_labels = months
-    plt.title("Rainfall or snowfall by month")
-    plt.pie(slices, colors = colors, labels = pie_labels)
-    plt.show()
-"""
 
 #  Graph #2
 def line_chart_2():
+    """
+    Creates a line chart to compare the record high and low temperatures each month.
+    It also prints:
+    A. The month with the highest record temperature
+    B. The month with the lowest record temperature
+    C. The average of all record temperatures
+    """
     x = range(len(months_extremes))
     plt.plot(x, record_high, marker = "o", color = colors[0], label = "Record high")
     plt.plot(x, record_low, marker = "o", color = colors[1], label = "Record low")
@@ -100,6 +113,13 @@ def line_chart_2():
 
 #  Graph #3
 def bar_chart_2():
+    """
+    Creates a bar chart comparing the average snow per month.
+    It also prints:
+    A. The month with the highest snowfall
+    B. The month with the lowest snowfall
+    C. The average snowfall of all months
+    """
     x = range(len(months_extremes))
     plt.bar(x, average_snow, color = colors)
     plt.xticks(ticks = x, labels = months_extremes)
@@ -120,6 +140,14 @@ def bar_chart_2():
 
 #  Graph #4
 def largest_temperature_range():
+    """
+    Calculates the temperature range per month by finding the difference between the record high and record low.
+    Creates a line chart to compare the monthly temperature ranges.
+    It also prints:
+    A. The month with the highest temperature range
+    B. The month with the lowest temperature range
+    C. The average temperature range of all months
+    """
     x = range(len(months_extremes))
     range_temps = [high - low for (high, low) in zip(record_high, record_low)]
     plt.plot(x, range_temps, marker="o", color=colors[0])
@@ -149,8 +177,6 @@ if __name__ == "__main__":
     open_filepath_1()
     open_filepath_2()
     line_chart()
-    # bar_chart()
-    # pie_chart()
     line_chart_2()
     bar_chart_2()
     largest_temperature_range()
